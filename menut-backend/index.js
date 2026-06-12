@@ -12,6 +12,9 @@ app.use(express.json())
 const authRoutes = require('./routes/auth')
 app.use('/auth', authRoutes)
 
+const groupRoutes = require('./routes/group')
+app.use('/groups', authMiddleware, groupRoutes)
+
 app.listen(3000, () => {
     console.log('Server running on port 3000')
 })
