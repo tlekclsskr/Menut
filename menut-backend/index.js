@@ -15,6 +15,9 @@ app.use('/auth', authRoutes)
 const groupRoutes = require('./routes/group')
 app.use('/groups', authMiddleware, groupRoutes)
 
+const availabilityRoutes = require('./routes/availability')
+app.use('/availability', authMiddleware, availabilityRoutes)
+
 app.listen(3000, () => {
     console.log('Server running on port 3000')
 })
