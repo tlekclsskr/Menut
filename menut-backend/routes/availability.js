@@ -28,7 +28,12 @@ router.get('/:groupId', async (req, res) => {
             }
         })
 
-        res.status(200).json(availableDate)
+        const formatted = availableDate.map(a => ({
+            ...a,
+            date: a.date.toISOString().split('T')[0]
+        }))
+
+        res.status(200).json(formatted)
     } catch (error) {
         return res.status(500).json({ message: "Server Error" })
     }
@@ -55,7 +60,7 @@ router.post('/', async (req, res) => {
             where: { 
                 groupId, 
                 userId: req.userId,
-                date: new Date(date)
+                date: new Date(`${date}T00:00:00.000Z`)
             }
         })
 
@@ -67,7 +72,7 @@ router.post('/', async (req, res) => {
             data: { 
                 userId: req.userId,
                 groupId, 
-                date: new Date(date)
+                date: new Date(`${date}T00:00:00.000Z`)
             }
         })
 
