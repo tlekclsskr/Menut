@@ -18,6 +18,6 @@ app.use('/groups', authMiddleware, groupRoutes)
 const availabilityRoutes = require('./routes/availability')
 app.use('/availability', authMiddleware, availabilityRoutes)
 
-app.listen(3000, () => {
-    console.log('Server running on port 3000')
+app.listen(4000, () => {
+    console.log('Server running on port 4000')
 })
