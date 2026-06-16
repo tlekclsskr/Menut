@@ -3,23 +3,20 @@ import Image from "next/image"
 export default function LandingPage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#e8d5f5] via-[#ffd6e7] to-[#ffefc5] flex items-center justify-center font-sans antialiased">
-            {/* Main Wrapper: กางเต็มหน้าจอ และแบ่งสัดส่วนซ้าย-ขวา */}
             <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 py-12 md:py-0 md:px-16 gap-12 md:gap-8">
                 
-                {/* Left Section (60% on desktop) */}
-                <div className="w-full md:w-[60%] flex flex-col justify-center gap-8">
-                    {/* Logo */}
-                    <div className="relative w-28 h-10 md:w-32 md:h-12">
+                <div className="w-full md:w-[60%] flex flex-col items-center md:items-start justify-center gap-8 text-center md:text-left">
+                    <div className="w-[45%] max-w-[210px] min-w-[150px]">
                         <Image 
                             src="/menut-logo.png" 
                             alt="Menut"
-                            fill
-                            className="object-contain"
+                            width={1200}
+                            height={400}
+                            className="w-full h-auto object-contain"
                             priority
                         />
                     </div>
 
-                    {/* Headline */}
                     <div className="flex flex-col gap-3">
                         <h1 className="text-4xl md:text-5xl font-bold text-[#4a3f6b] leading-tight">
                             Web application <br />
@@ -31,8 +28,7 @@ export default function LandingPage() {
                         </p>
                     </div>
 
-                    {/* Feature list */}
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 items-start mx-auto md:mx-0">
                         {[
                             { icon: '📅', text: 'มาร์ควันว่างของตัวเอง' },
                             { icon: '👥', text: 'เห็นวันว่างทุกคนในกลุ่ม' },
@@ -47,7 +43,6 @@ export default function LandingPage() {
                         ))}
                     </div>
 
-                    {/* Call to Action Buttons */}
                     <div className="flex flex-row gap-4 mt-2">
                         <a href="/register" className="bg-[#7c6fcd] text-white px-6 py-3.5 rounded-xl font-medium shadow-md shadow-[#7c6fcd]/20 hover:bg-[#6a5eb5] transition-all whitespace-nowrap">
                             สมัครสมาชิกฟรี
@@ -58,10 +53,8 @@ export default function LandingPage() {
                     </div>
                 </div>
 
-                {/* Right Section (40% on desktop) */}
                 <div className="w-full md:w-[40%] flex items-center justify-center md:justify-end">
                     <div className="bg-white/40 backdrop-blur-md rounded-3xl p-6 border border-white/60 w-full max-w-[280px] shadow-xl shadow-purple-900/5">
-                        {/* Group header */}
                         <div className="mb-5">
                             <p className="font-semibold text-[#4a3f6b] text-sm flex items-center gap-1">
                                 <span>🏖️</span> ทริปเชียงใหม่
@@ -75,7 +68,6 @@ export default function LandingPage() {
                             </div>
                         </div>
 
-                        {/* Mini calendar */}
                         <div className="grid grid-cols-7 gap-1 text-center text-xs">
                             {['อา','จ','อ','พ','พฤ','ศ','ส'].map(d => (
                                 <div key={d} className="text-[#9b8ec4] font-medium py-1">{d}</div>
@@ -90,7 +82,6 @@ export default function LandingPage() {
                             ))}
                         </div>
 
-                        {/* Legend */}
                         <div className="flex gap-4 mt-5 pt-3 border-t border-white/30">
                             <div className="flex items-center gap-1.5 text-[11px] text-[#7d70a8] font-medium">
                                 <div className="w-3 h-3 rounded-md bg-[#eeedfe] border border-[#dcd9fd]"></div>ว่างของฉัน

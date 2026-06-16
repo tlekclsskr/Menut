@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="th">
-      <body className={`${ibmPlex.variable} font-[var(--font-ibm)] antialiased`}>
+      <body className={`${ibmPlex.variable} font-(--font-ibm) antialiased`}>
         <RegisterProvider>
           {children}
         </RegisterProvider>
