@@ -6,7 +6,7 @@ export default function LandingPage() {
             <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 py-12 md:py-0 md:px-16 gap-12 md:gap-8">
                 
                 <div className="w-full md:w-[60%] flex flex-col items-center md:items-start justify-center gap-8 text-center md:text-left">
-                    <div className="w-[45%] max-w-[210px] min-w-[150px]">
+                    <div className="w-72 md:w-96 flex justify-start">
                         <Image 
                             src="/menut-logo.png" 
                             alt="Menut"
