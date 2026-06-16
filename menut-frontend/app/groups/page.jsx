@@ -3,8 +3,12 @@
 import { fetchAPI } from '@/src/lib/api'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/src/lib/supabase'
+import { useAuth } from '@/src/hooks/useAuth'
 
 export default function GroupsPage() {
+
+    const isReady = useAuth()
+
     const [groupLists, setGroupLists] = useState([])
     const [inviteCode, setInviteCode] = useState('')
     const [file, setFile] = useState(null)
@@ -78,6 +82,8 @@ export default function GroupsPage() {
     useEffect(() => {
         fetchGroups()
     }, [])
+
+    if  (!isReady) return <div>Loading...</div>
 
     return (
         <div>

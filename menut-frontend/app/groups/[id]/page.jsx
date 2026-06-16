@@ -3,8 +3,12 @@
 import { useEffect, useState } from "react"
 import { fetchAPI } from "@/src/lib/api"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/src/hooks/useAuth"
 
 export default function GroupsPage({ params }) {
+
+    const isReady = useAuth()
+
     const [currentMonth, setCurrentMonth] = useState(new Date())
     const [group, setGroup] = useState(null)
     const [members, setMembers] = useState([])
@@ -77,7 +81,7 @@ export default function GroupsPage({ params }) {
         fetchAll()
     }, [])
 
-    if (!group) {
+    if (!isReady || !group) {
         return <div>Loading...</div>
     }
 
