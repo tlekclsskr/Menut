@@ -78,6 +78,21 @@ router.get('/profile', authMiddleware, async (req, res) => {
     }
 })
 
+router.get('/check-email', async (req, res) => {
+    const { email } = req.query
+
+    if  (!email) {
+        return res.status(400).json({ message: "กรุณาส่ง email" })
+    }
+
+    try {
+        const user = await prisma.user.findUnique({ where: { email } })
+        res.status(200).json({ exists: !!user })
+    } catch (error) {
+        return res.status(500).json({ message: "Server Error" })
+    }
+})
+
 router.put('/profile', authMiddleware, async (req, res) => {
     const { name, imageUrl } = req.body
 

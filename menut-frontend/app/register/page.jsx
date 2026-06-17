@@ -1,9 +1,10 @@
 'use client'
 
 import { useRegister } from "@/src/context/RegisterContext"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
+import { fetchAPI } from "@/src/lib/api"
 
 export default function RegisterPage() {
     const [registerData, setRegisterData] = useState({
@@ -12,6 +13,7 @@ export default function RegisterPage() {
         retypedPassword: ''
     })
     const [isCheck, setIsCheck] = useState(false)
+    const [error, setError] = useState('')
     const isValid = registerData.email 
         && registerData.password 
         && registerData.password === registerData.retypedPassword
@@ -20,8 +22,14 @@ export default function RegisterPage() {
     const router = useRouter()
     const { registerData: contextData, setRegisterData: setContextData } = useRegister() 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
+        
+        const { exists } = await fetchAPI(`/auth/check-email?email=${registerData.email}`)
+        if  (exists) {
+            setError('Email นี้มีผู้ใช้งานแล้ว กรุณาใช้ email อื่น')
+            return
+        }
 
         setContextData({
             ...contextData,
@@ -81,13 +89,14 @@ export default function RegisterPage() {
                         />
                         <span className="text-sm text-text-muted">ฉันยอมรับเงื่อนไขการใช้งาน</span>
                     </label>
+                    { error && <p className="text-red-400 text-sm text-center">{error}</p> }
                     <button 
                         type='submit' 
                         disabled={!isValid}
                         className={`w-full py-3 rounded-xl font-medium text-sm transition-colors
                            ${isValid ? 'bg-primary text-white hover:bg-[#6a5eb5]' : 'bg-card-border text-text-muted cursor-not-allowed'}`}
                     >
-                        สร้างบัญชี
+                        ถัดไป →
                     </button>
                 </form>
                 
