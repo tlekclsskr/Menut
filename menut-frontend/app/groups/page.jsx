@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/src/lib/supabase'
 import { useAuth } from '@/src/hooks/useAuth'
 import { useRouter } from 'next/navigation'
+import CalendarView from "@/src/components/CalendarView"
 
 export default function GroupsPage() {
 
@@ -19,6 +20,7 @@ export default function GroupsPage() {
     const [showJoin, setShowJoin] = useState(false)
     const [profile, setProfile] = useState(null)
     const [copied, setCopied] = useState(false)
+    const [selectedGroupId, setSelectedGroupId] = useState(null)
 
     const fetchGroups = async () => {
         try {
@@ -112,20 +114,27 @@ export default function GroupsPage() {
             {groupLists.map((group) => (
                 <div
                     key={group.id}
-                    className="bg-white border border-[#ede8f5] rounded-2xl px-3 py-2.5 flex items-center gap-3 cursor-pointer hover:border-[#c4b8f0] transition-colors shadow-sm"
-                    onClick={() => router.push(`/groups/${group.id}`)}
+                    className={`bg-white border rounded-2xl px-3 py-2.5 flex items-center gap-3 cursor-pointer transition-colors shadow-sm
+                        ${selectedGroupId === group.id ? 'border-[#7c6fcd]' : 'border-[#ede8f5] hover:border-[#c4b8f0]'}`}
+                    onClick={() => {
+                        if (window.innerWidth < 768) {
+                            router.push(`/groups/${group.id}`)
+                        } else {
+                            setSelectedGroupId(group.id)
+                        }
+                    }}
                 >
-                    <div className="w-9 h-9 rounded-xl bg-available-me flex items-center justify-center text-base shrink-0 overflow-hidden">
+                    <div className="w-9 h-9 rounded-xl bg-[#eeedfe] flex items-center justify-center text-base shrink-0 overflow-hidden">
                         {group.imageUrl ? (
                             <img src={group.imageUrl} className="w-full h-full object-cover" />
                         ) : '👥'}
                     </div>
                     <div className="flex-1">
-                        <p className="text-sm font-medium text-text-dark">{group.name}</p>
+                        <p className="text-sm font-medium text-[#4a3f6b]">{group.name}</p>
                     </div>
                     <button
                         onClick={(e) => { e.stopPropagation(); handleCopy(group.inviteCode) }}
-                        className="w-7 h-7 bg-input-bg border border-[#e0d8f8] rounded-lg flex items-center justify-center text-xs shrink-0"
+                        className="w-7 h-7 bg-[#f5f2ff] border border-[#e0d8f8] rounded-lg flex items-center justify-center text-xs shrink-0"
                     >
                         🔗
                     </button>
@@ -138,13 +147,13 @@ export default function GroupsPage() {
         <div className="flex gap-2 mt-3">
             <button
                 onClick={() => { setShowCreate(true); setShowJoin(false) }}
-                className="flex-1 bg-primary text-white py-2.5 rounded-xl text-sm font-medium"
+                className="flex-1 bg-[#7c6fcd] text-white py-2.5 rounded-xl text-sm font-medium"
             >
                 สร้างกลุ่ม
             </button>
             <button
                 onClick={() => { setShowJoin(true); setShowCreate(false) }}
-                className="flex-1 bg-white text-primary border border-[#c4b8f0] py-2.5 rounded-xl text-sm font-medium"
+                className="flex-1 bg-white text-[#7c6fcd] border border-[#c4b8f0] py-2.5 rounded-xl text-sm font-medium"
             >
                 เข้าร่วมกลุ่ม
             </button>
@@ -152,7 +161,7 @@ export default function GroupsPage() {
     )
 
     return (
-        <div className="min-h-screen bg-linear-to-br from-[#e8d5f5] via-[#ffd6e7] to-[#ffefc5]">
+        <div className="min-h-screen bg-gradient-to-br from-[#e8d5f5] via-[#ffd6e7] to-[#ffefc5]">
 
             {/* Modal สร้างกลุ่ม */}
             {showCreate && (
@@ -161,22 +170,16 @@ export default function GroupsPage() {
                     onClick={() => setShowCreate(false)}
                 >
                     <div
-                        className="bg-white rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
+                        className="bg-white rounded-3xl p-6 w-full max-w-sm mx-4 border border-[#e2d9f3]"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <h2 className="text-lg font-medium text-text-dark mb-4">สร้างกลุ่มใหม่</h2>
+                        <h2 className="text-lg font-medium text-[#4a3f6b] mb-4">สร้างกลุ่มใหม่</h2>
                         <form onSubmit={handleCreate} className="flex flex-col gap-3">
-
-                            {/* Avatar upload */}
                             <div className="flex flex-col items-center mb-2">
                                 <label className="cursor-pointer">
-                                    <div className="w-16 h-16 rounded-2xl bg-input-bg border-2 border-dashed border-[#c4b8f0] flex items-center justify-center text-2xl hover:bg-available-me transition-colors overflow-hidden">
+                                    <div className="w-16 h-16 rounded-2xl bg-[#f5f2ff] border-2 border-dashed border-[#c4b8f0] flex items-center justify-center text-2xl hover:bg-[#eeedfe] transition-colors overflow-hidden">
                                         {file ? (
-                                            <img
-                                                src={URL.createObjectURL(file)}
-                                                alt="group"
-                                                className="w-full h-full object-cover"
-                                            />
+                                            <img src={URL.createObjectURL(file)} alt="group" className="w-full h-full object-cover" />
                                         ) : '🖼️'}
                                     </div>
                                     <input
@@ -186,26 +189,17 @@ export default function GroupsPage() {
                                         className="hidden"
                                     />
                                 </label>
-                                <p className="text-xs text-text-muted mt-1">กดเพื่ออัปโหลดรูปกลุ่ม</p>
+                                <p className="text-xs text-[#9b8ec4] mt-1">กดเพื่ออัปโหลดรูปกลุ่ม</p>
                             </div>
-
                             <input
                                 value={addGroupData.name}
                                 onChange={(e) => setAddGroupData({ ...addGroupData, name: e.target.value })}
                                 placeholder="ชื่อกลุ่ม"
-                                className="w-full px-4 py-3 bg-input-bg rounded-xl border border-card-border text-sm text-text-dark focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                className="w-full px-4 py-3 bg-[#f5f2ff] rounded-xl border border-[#e2d9f3] text-sm text-[#4a3f6b] focus:outline-none focus:ring-2 focus:ring-[#7c6fcd]/30"
                             />
                             <div className="flex gap-2 mt-2">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowCreate(false)}
-                                    className="flex-1 bg-white text-primary border border-[#c4b8f0] py-3 rounded-xl text-sm font-medium"
-                                >
-                                    ยกเลิก
-                                </button>
-                                <button type="submit" className="flex-1 bg-primary text-white py-3 rounded-xl text-sm font-medium">
-                                    สร้างกลุ่ม
-                                </button>
+                                <button type="button" onClick={() => setShowCreate(false)} className="flex-1 bg-white text-[#7c6fcd] border border-[#c4b8f0] py-3 rounded-xl text-sm font-medium">ยกเลิก</button>
+                                <button type="submit" className="flex-1 bg-[#7c6fcd] text-white py-3 rounded-xl text-sm font-medium">สร้างกลุ่ม</button>
                             </div>
                         </form>
                     </div>
@@ -219,51 +213,40 @@ export default function GroupsPage() {
                     onClick={() => setShowJoin(false)}
                 >
                     <div
-                        className="bg-white rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
+                        className="bg-white rounded-3xl p-6 w-full max-w-sm mx-4 border border-[#e2d9f3]"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <h2 className="text-lg font-medium text-text-dark mb-4">เข้าร่วมกลุ่ม</h2>
+                        <h2 className="text-lg font-medium text-[#4a3f6b] mb-4">เข้าร่วมกลุ่ม</h2>
                         <form onSubmit={handleJoin} className="flex flex-col gap-3">
                             <input
                                 value={inviteCode}
                                 onChange={(e) => setInviteCode(e.target.value)}
                                 placeholder="Invite Code"
-                                className="w-full px-4 py-3 bg-input-bg rounded-xl border border-card-border text-sm text-text-dark focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                className="w-full px-4 py-3 bg-[#f5f2ff] rounded-xl border border-[#e2d9f3] text-sm text-[#4a3f6b] focus:outline-none focus:ring-2 focus:ring-[#7c6fcd]/30"
                             />
                             <div className="flex gap-2 mt-2">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowJoin(false)}
-                                    className="flex-1 bg-white text-primary border border-[#c4b8f0] py-3 rounded-xl text-sm font-medium"
-                                >
-                                    ยกเลิก
-                                </button>
-                                <button type="submit" className="flex-1 bg-primary text-white py-3 rounded-xl text-sm font-medium">
-                                    เข้าร่วม
-                                </button>
+                                <button type="button" onClick={() => setShowJoin(false)} className="flex-1 bg-white text-[#7c6fcd] border border-[#c4b8f0] py-3 rounded-xl text-sm font-medium">ยกเลิก</button>
+                                <button type="submit" className="flex-1 bg-[#7c6fcd] text-white py-3 rounded-xl text-sm font-medium">เข้าร่วม</button>
                             </div>
                         </form>
                     </div>
                 </div>
             )}
-            
+
             {copied && (
-                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-text-dark text-white text-sm px-4 py-2 rounded-xl z-50">
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#4a3f6b] text-white text-sm px-4 py-2 rounded-xl z-50">
                     คัดลอก Invite Code แล้ว ✓
                 </div>
             )}
 
             {/* Mobile */}
             <div className="md:hidden flex flex-col min-h-screen">
-                <div className="bg-linear-to-r from-[#e8d5f5] to-[#ffd6e7] px-4 py-5 flex items-center justify-between">
+                <div className="bg-gradient-to-r from-[#e8d5f5] to-[#ffd6e7] px-4 py-5 flex items-center justify-between">
                     <div>
-                        <h1 className="text-base font-medium text-text-dark">กลุ่มของฉัน</h1>
-                        <p className="text-xs text-text-muted">{groupLists.length} กลุ่ม</p>
+                        <h1 className="text-base font-medium text-[#4a3f6b]">กลุ่มของฉัน</h1>
+                        <p className="text-xs text-[#9b8ec4]">{groupLists.length} กลุ่ม</p>
                     </div>
-                    <button
-                        onClick={() => router.push('/profile')}
-                        className="w-8 h-8 rounded-full bg-white border border-card-border flex items-center justify-center text-xs font-medium text-primary"
-                    >
+                    <button onClick={() => router.push('/profile')} className="w-8 h-8 rounded-full bg-white border border-[#e2d9f3] flex items-center justify-center text-xs font-medium text-[#7c6fcd]">
                         {avatarLetter}
                     </button>
                 </div>
@@ -277,16 +260,13 @@ export default function GroupsPage() {
 
             {/* Desktop */}
             <div className="hidden md:flex min-h-screen">
-                <div className="w-70 bg-white/30 backdrop-blur-md flex flex-col p-4 border-r border-card-border">
+                <div className="w-[280px] bg-white/30 backdrop-blur-md flex flex-col p-4 border-r border-[#e2d9f3]">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h1 className="text-sm font-medium text-text-dark">กลุ่มของฉัน</h1>
-                            <p className="text-xs text-text-muted">{groupLists.length} กลุ่ม</p>
+                            <h1 className="text-sm font-medium text-[#4a3f6b]">กลุ่มของฉัน</h1>
+                            <p className="text-xs text-[#9b8ec4]">{groupLists.length} กลุ่ม</p>
                         </div>
-                        <button
-                            onClick={() => router.push('/profile')}
-                            className="w-8 h-8 rounded-full bg-white border border-card-border flex items-center justify-center text-xs font-medium text-primary"
-                        >
+                        <button onClick={() => router.push('/profile')} className="w-8 h-8 rounded-full bg-white border border-[#e2d9f3] flex items-center justify-center text-xs font-medium text-[#7c6fcd]">
                             {avatarLetter}
                         </button>
                     </div>
@@ -295,11 +275,19 @@ export default function GroupsPage() {
                     </div>
                     <ActionButtons />
                 </div>
+
+                {/* Main area */}
                 <div className="flex-1 flex items-center justify-center">
-                    <div className="text-center">
-                        <p className="text-3xl mb-2">👆</p>
-                        <p className="text-sm text-[#c4b8f0]">เลือกกลุ่มเพื่อดูปฏิทิน</p>
-                    </div>
+                    {selectedGroupId ? (
+                        <div className="w-full h-full overflow-y-auto">
+                            <CalendarView groupId={selectedGroupId} />
+                        </div>
+                    ) : (
+                        <div className="text-center">
+                            <p className="text-3xl mb-2">👆</p>
+                            <p className="text-sm text-[#c4b8f0]">เลือกกลุ่มเพื่อดูปฏิทิน</p>
+                        </div>
+                    )}
                 </div>
             </div>
 
