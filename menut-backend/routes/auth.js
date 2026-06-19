@@ -96,7 +96,7 @@ router.get('/check-email', async (req, res) => {
 router.put('/profile', authMiddleware, async (req, res) => {
     const { name, imageUrl } = req.body
 
-    if  (!name) {
+    if  (!name && !imageUrl) {
         return res.status(400).json({ message: "กรุณากรอกชื่อหรือเลือกรูปภาพ" })
     }
 
