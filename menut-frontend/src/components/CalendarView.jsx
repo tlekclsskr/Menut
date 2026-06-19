@@ -88,7 +88,7 @@ export default function CalendarView({ groupId }) {
                                     className="w-full h-full object-cover"
                                 />
                             ) : (
-                                <div className="w-full h-full bg-[#eeedfe] flex items-center justify-center text-xs text-[#7c6fcd] font-medium">
+                                <div className="w-full h-full bg-available-me flex items-center justify-center text-xs text-primary font-medium">
                                     {m.user.name[0]}
                                 </div>
                             )}
