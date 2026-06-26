@@ -117,13 +117,12 @@ export default function CalendarView({ groupId }) {
             <div className="mb-6">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        {/* รูปกลุ่ม — mobile only */}
-                        <div className="md:hidden w-16 h-16 rounded-full border-2 border-white bg-available-me overflow-hidden shrink-0">
+                        <div className="w-16 h-16 rounded-full border-2 border-white bg-available-me overflow-hidden shrink-0">
                             {group.imageUrl ? (
                                 <img src={group.imageUrl} className="w-full h-full object-cover" />
                             ) : '👥'}
                         </div>
-                        <h1 className="text-xl font-medium text-text-dark">{group.name}</h1>
+                        <h1 className="text-xl font-medium text-text-dark">{group.name} ({members.length})</h1>
                     </div>
                     <button
                         onClick={() => router.push(`/groups/${groupId}/settings`)}

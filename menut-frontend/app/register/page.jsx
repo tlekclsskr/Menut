@@ -54,7 +54,7 @@ export default function RegisterPage() {
                         <label className="text-sm text-text-muted">อีเมล</label>
                         <input
                             value={registerData.email}
-                            onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+                            onChange={(e) => { setRegisterData({ ...registerData, email: e.target.value }); setError('') }}
                             placeholder="example@email.com"
                             type="email"
                             className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border placeholder-[#c4b8f0] focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"

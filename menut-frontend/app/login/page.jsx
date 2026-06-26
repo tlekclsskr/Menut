@@ -10,6 +10,7 @@ export default function LoginPage() {
         email: '',
         password: ''
     })
+    const [error, setError] = useState('')
     const isValid = loginData.email && loginData.password
 
     const handleSubmit = async (e) => {
@@ -25,7 +26,7 @@ export default function LoginPage() {
             localStorage.setItem('token', result.token)
             router.push('/groups')
         } catch (error) {
-            console.log(error)
+            setError('อีเมลหรือรหัสผ่านไม่ถูกต้อง')
         }
     }
 
@@ -49,7 +50,7 @@ export default function LoginPage() {
                         <label className="text-sm text-text-muted">อีเมล</label>
                         <input
                             value={loginData.email}
-                            onChange={(e) => setLoginData({...loginData, email: e.target.value})}
+                            onChange={(e) => { setLoginData({...loginData, email: e.target.value}); setError('') }}
                             type="email"
                             placeholder="example@email.com"
                             className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border placeholder-[#c4b8f0] focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
@@ -61,7 +62,7 @@ export default function LoginPage() {
                         <label className="text-sm text-text-muted">รหัสผ่าน</label>
                         <input
                             value={loginData.password}
-                            onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                            onChange={(e) => { setLoginData({...loginData, password: e.target.value}); setError('') }}
                             type="password"
                             placeholder="••••••••"
                             className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border placeholder-[#c4b8f0] focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
@@ -72,6 +73,10 @@ export default function LoginPage() {
                     <div className="flex justify-end -mt-2">
                         <a href="#" className="text-xs text-primary">ลืมรหัสผ่าน?</a>
                     </div>
+
+                    {error && (
+                        <p className="text-red-400 text-sm text-center">{error}</p>
+                    )}
 
                     {/* Submit */}
                     <button
