@@ -1,4 +1,4 @@
 menut-backend/node_modules
 menut-frontend/node_modules
 menut-backend/.env
-menut-frontend/.env
+menut-frontend/.env.local
