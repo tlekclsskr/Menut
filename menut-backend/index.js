@@ -6,7 +6,12 @@ const app = express()
 
 const authMiddleware = require('./middleware/auth')
 
-app.use(cors())
+app.use(cors({
+    origin: [
+        'http://localhost:3000',
+        'https://menut.vercel.app'
+    ]
+}))
 app.use(express.json())
 
 const authRoutes = require('./routes/auth')
