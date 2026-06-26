@@ -5,13 +5,26 @@
   --foreground: #4a3f6b;
 
   --color-primary: #7c6fcd;
+  --color-primary-hover: #6a5eb5;
   --color-primary-light: #b8a9f0;
   --color-text-dark: #4a3f6b;
-  --color-text-muted: #9b8ec4;
+  --color-text-muted: #7d70a8;
+  --color-text-secondary: #6b5e9c;
   --color-card-border: #e2d9f3;
+  --color-border-accent: #c4b8f0;
+  --color-border-subtle: #ede8f5;
   --color-input-bg: #f5f2ff;
+  --color-placeholder: #9588c8;
   --color-available-me: #eeedfe;
+  --color-available-me-text: #534ab7;
   --color-available-all: #fef9c3;
+  --color-available-all-text: #854d0e;
+  --color-gradient-lavender: #e8d5f5;
+  --color-gradient-blush: #ffd6e7;
+  --color-gradient-cream: #ffefc5;
+  --color-error: #dc2626;
+  --color-error-border: #fecaca;
+  --color-error-bg: #fef2f2;
 }
 
 @theme inline {
@@ -20,17 +33,65 @@
   --font-sans: var(--font-ibm);
 
   --color-primary: #7c6fcd;
+  --color-primary-hover: #6a5eb5;
   --color-primary-light: #b8a9f0;
   --color-text-dark: #4a3f6b;
-  --color-text-muted: #9b8ec4;
+  --color-text-muted: #7d70a8;
+  --color-text-secondary: #6b5e9c;
   --color-card-border: #e2d9f3;
+  --color-border-accent: #c4b8f0;
+  --color-border-subtle: #ede8f5;
   --color-input-bg: #f5f2ff;
+  --color-placeholder: #9588c8;
   --color-available-me: #eeedfe;
+  --color-available-me-text: #534ab7;
   --color-available-all: #fef9c3;
+  --color-available-all-text: #854d0e;
+  --color-gradient-lavender: #e8d5f5;
+  --color-gradient-blush: #ffd6e7;
+  --color-gradient-cream: #ffefc5;
+  --color-error: #dc2626;
+  --color-error-border: #fecaca;
+  --color-error-bg: #fef2f2;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-ibm), sans-serif;
+  line-height: 1.5;
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--color-primary) 50%, transparent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility bg-shell {
+  background: linear-gradient(
+    to bottom right,
+    var(--color-gradient-lavender),
+    var(--color-gradient-blush),
+    var(--color-gradient-cream)
+  );
+}
+
+@utility bg-shell-header {
+  background: linear-gradient(
+    to right,
+    var(--color-gradient-lavender),
+    var(--color-gradient-blush)
+  );
 }

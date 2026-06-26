@@ -25,86 +25,79 @@ export default function LoginPage() {
             })
             localStorage.setItem('token', result.token)
             router.push('/groups')
-        } catch (error) {
+        } catch {
             setError('อีเมลหรือรหัสผ่านไม่ถูกต้อง')
         }
     }
 
+    const btnPrimary = isValid
+        ? 'bg-primary text-white hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-primary/30'
+        : 'bg-card-border text-text-muted cursor-not-allowed'
+
     return (
-        <div className="min-h-screen bg-linear-to-br from-[#e8d5f5] via-[#ffd6e7] to-[#ffefc5] flex items-center justify-center p-4">
-            
-            {/* Card */}
+        <div className="min-h-screen bg-shell flex items-center justify-center p-4">
             <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-card-border">
-                
-                {/* Header */}
                 <div className="mb-8">
                     <h1 className="text-2xl font-medium text-text-dark">ยินดีต้อนรับกลับ</h1>
                     <p className="text-text-muted text-sm mt-1">เข้าสู่ระบบเพื่อดูกลุ่มของคุณ</p>
                 </div>
 
-                {/* Form */}
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                    
-                    {/* Email */}
                     <div className="flex flex-col gap-1">
-                        <label className="text-sm text-text-muted">อีเมล</label>
+                        <label htmlFor="login-email" className="text-sm text-text-muted">อีเมล</label>
                         <input
+                            id="login-email"
                             value={loginData.email}
                             onChange={(e) => { setLoginData({...loginData, email: e.target.value}); setError('') }}
                             type="email"
+                            autoComplete="email"
                             placeholder="example@email.com"
-                            className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border placeholder-[#c4b8f0] focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
+                            className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
                         />
                     </div>
 
-                    {/* Password */}
                     <div className="flex flex-col gap-1">
-                        <label className="text-sm text-text-muted">รหัสผ่าน</label>
+                        <label htmlFor="login-password" className="text-sm text-text-muted">รหัสผ่าน</label>
                         <input
+                            id="login-password"
                             value={loginData.password}
                             onChange={(e) => { setLoginData({...loginData, password: e.target.value}); setError('') }}
                             type="password"
+                            autoComplete="current-password"
                             placeholder="••••••••"
-                            className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border placeholder-[#c4b8f0] focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
+                            className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
                         />
                     </div>
 
-                    {/* Forgot password */}
-                    <div className="flex justify-end -mt-2">
-                        <a href="#" className="text-xs text-primary">ลืมรหัสผ่าน?</a>
-                    </div>
-
                     {error && (
-                        <p className="text-red-400 text-sm text-center">{error}</p>
+                        <p className="text-error text-sm text-center" role="alert">{error}</p>
                     )}
 
-                    {/* Submit */}
                     <button
                         type="submit"
                         disabled={!isValid}
-                        className={`w-full py-3 rounded-xl font-medium text-sm transition-colors
-                            ${isValid ? 'bg-primary text-white hover:bg-[#6a5eb5]' : 'bg-card-border text-text-muted cursor-not-allowed'}`}
+                        className={`w-full py-3 rounded-xl font-medium text-sm transition-colors ${btnPrimary}`}
                     >
                         เข้าสู่ระบบ
                     </button>
 
-                    {/* Divider */}
                     <div className="flex items-center gap-4">
-                        <div className="flex-1 h-px bg-card-border"></div>
+                        <div className="flex-1 h-px bg-card-border" />
                         <span className="text-xs text-text-muted">หรือ</span>
-                        <div className="flex-1 h-px bg-card-border"></div>
+                        <div className="flex-1 h-px bg-card-border" />
                     </div>
 
-                    {/* Register */}
-                    <a href="/register" className="w-full py-3 rounded-xl font-medium text-sm text-center text-primary border border-[#c4b8f0] bg-white hover:bg-input-bg transition-colors">
+                    <a
+                        href="/register"
+                        className="w-full py-3 rounded-xl font-medium text-sm text-center text-primary border border-border-accent bg-white hover:bg-input-bg transition-colors focus-visible:ring-2 focus-visible:ring-primary/30"
+                    >
                         สมัครสมาชิก
                     </a>
 
                     <p className="text-center text-xs text-text-muted">
                         ยังไม่มีบัญชี?{' '}
-                        <a href="/register" className="text-primary font-medium">สมัครฟรี</a>
+                        <a href="/register" className="text-primary font-medium hover:underline">สมัครฟรี</a>
                     </p>
-
                 </form>
             </div>
         </div>
