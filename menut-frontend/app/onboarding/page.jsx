@@ -36,7 +36,6 @@ export default function OnboardingPage() {
                 .upload(fileName, file)
 
             if (error) {
-                console.log(error)
                 return
             }
 
@@ -58,7 +57,6 @@ export default function OnboardingPage() {
             })
             router.push('/login')
         } catch (error) {
-            console.log(error)
         }
     }
 

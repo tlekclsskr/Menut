@@ -29,7 +29,6 @@ export default function ProfilePage() {
                 .upload(fileName, file)
 
             if (error) {
-                console.log(error)
                 return
             }
 
@@ -48,7 +47,6 @@ export default function ProfilePage() {
             })
             router.push('/groups')
         } catch (error) {
-            console.log(error)
         }
     }
 

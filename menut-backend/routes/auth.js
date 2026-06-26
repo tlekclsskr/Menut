@@ -27,7 +27,6 @@ router.post('/register', async (req, res) => {
         })
         res.status(201).json({ message: "สมัครสมาชิกสำเร็จ", userId: newUser.id })
     } catch (error) {
-        console.log(error)
         return res.status(400).json({ message: "Email นี้มีอยู่แล้ว" })
     }
 })
