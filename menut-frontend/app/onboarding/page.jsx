@@ -12,30 +12,33 @@ export default function OnboardingPage() {
         birthDate: '',
     })
     const [file, setFile] = useState(null)
+    const [error, setError] = useState('')
     const isValid = registerData.name && registerData.birthDate
 
     const { registerData: contextData } = useRegister()
     const router = useRouter()
 
     useEffect(() => {
-        if  (!contextData.email || !contextData.password) {
+        if (!contextData.email || !contextData.password) {
             router.push('/register')
         }
-    }, [])
+    }, [contextData.email, contextData.password, router])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setError('')
 
         let imageUrl = ''
 
         if (file) {
             const fileExt = file.name.split('.').pop()
             const fileName = `${Date.now()}.${fileExt}`
-            const { data, error } = await supabase.storage
+            const { data, error: uploadError } = await supabase.storage
                 .from('avatars')
                 .upload(fileName, file)
 
-            if (error) {
+            if (uploadError) {
+                setError('อัปโหลดรูปไม่สำเร็จ ลองใหม่อีกครั้ง')
                 return
             }
 
@@ -56,36 +59,36 @@ export default function OnboardingPage() {
                 })
             })
             router.push('/login')
-        } catch (error) {
+        } catch {
+            setError('สมัครสมาชิกไม่สำเร็จ ลองใหม่อีกครั้ง')
         }
     }
 
-    return (
-        <div className="min-h-screen bg-linear-to-br from-[#e8d5f5] via-[#ffd6e7] to-[#ffefc5] flex items-center justify-center p-4">
-            <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-card-border">
+    const btnPrimary = isValid
+        ? 'bg-primary text-white hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-primary/30'
+        : 'bg-card-border text-text-muted cursor-not-allowed'
 
-                {/* Step dots */}
-                <div className="flex gap-2 mb-6">
-                    <div className="w-3 h-3 rounded-full bg-[#e0d8f8]"></div>
-                    <div className="w-5 h-3 rounded-full bg-primary"></div>
+    return (
+        <div className="min-h-screen bg-shell flex items-center justify-center p-4">
+            <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-card-border">
+                <div className="flex gap-2 mb-6" aria-label="ขั้นตอนที่ 2 จาก 2">
+                    <div className="w-3 h-3 rounded-full bg-card-border" aria-hidden="true" />
+                    <div className="w-5 h-3 rounded-full bg-primary" aria-hidden="true" />
                 </div>
 
-                {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-2xl font-bold text-text-dark">บอกเราเพิ่มเติม</h1>
+                    <h1 className="text-2xl font-medium text-text-dark">บอกเราเพิ่มเติม</h1>
                     <p className="text-text-muted text-sm mt-1">ตั้งค่าโปรไฟล์ของคุณ</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
-                    {/* Avatar upload */}
                     <div className="flex flex-col items-center gap-2">
                         <label className="cursor-pointer">
-                            <div className="w-20 h-20 rounded-full bg-input-bg border-2 border-dashed border-[#c4b8f0] flex items-center justify-center text-2xl hover:bg-available-me transition-colors overflow-hidden">
+                            <div className="w-20 h-20 rounded-full bg-input-bg border-2 border-dashed border-border-accent flex items-center justify-center text-2xl hover:bg-available-me transition-colors overflow-hidden">
                                 {file ? (
                                     <img
                                         src={URL.createObjectURL(file)}
-                                        alt="avatar"
+                                        alt=""
                                         className="w-full h-full object-cover"
                                     />
                                 ) : '📷'}
@@ -100,39 +103,42 @@ export default function OnboardingPage() {
                         <p className="text-xs text-text-muted">กดเพื่ออัปโหลดรูปโปรไฟล์</p>
                     </div>
 
-                    {/* Name */}
                     <div className="flex flex-col gap-1">
-                        <label className="text-sm text-text-muted">ชื่อที่แสดง</label>
+                        <label htmlFor="onboarding-name" className="text-sm text-text-muted">ชื่อที่แสดง</label>
                         <input
+                            id="onboarding-name"
                             value={registerData.name}
                             onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
                             placeholder="ชื่อของคุณ"
                             type="text"
-                            className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border placeholder-[#c4b8f0] focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
+                            required
+                            className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
                         />
                     </div>
 
-                    {/* BirthDate */}
                     <div className="flex flex-col gap-1">
-                        <label className="text-sm text-text-muted">วันเกิด</label>
+                        <label htmlFor="onboarding-birthdate" className="text-sm text-text-muted">วันเกิด</label>
                         <input
+                            id="onboarding-birthdate"
                             value={registerData.birthDate}
                             onChange={(e) => setRegisterData({ ...registerData, birthDate: e.target.value })}
                             type="date"
+                            required
                             className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
                         />
                     </div>
 
-                    {/* Submit */}
+                    {error && (
+                        <p className="text-error text-sm text-center" role="alert">{error}</p>
+                    )}
+
                     <button
                         type="submit"
                         disabled={!isValid}
-                        className={`w-full py-3 rounded-xl font-medium text-sm transition-colors
-                            ${isValid ? 'bg-primary text-white hover:bg-[#6a5eb5]' : 'bg-card-border text-text-muted cursor-not-allowed'}`}
+                        className={`w-full py-3 rounded-xl font-medium text-sm transition-colors ${btnPrimary}`}
                     >
                         สมัครสมาชิก
                     </button>
-
                 </form>
             </div>
         </div>
