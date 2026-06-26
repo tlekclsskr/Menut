@@ -233,7 +233,7 @@ export default function CalendarView({ groupId }) {
                                     ${isAllAvailable ? 'bg-available-all text-available-all-text font-medium' :
                                     isMarkedByMe ? 'bg-available-me text-available-me-text font-medium' :
                                     'hover:bg-input-bg text-text-dark'}
-                                    ${isBusy ? 'opacity-60 cursor-wait' : ''}
+                                    ${isBusy ? 'opacity-60' : ''}
                                 `}
                                 onClick={() => handleToggleDate(day)}
                             >
