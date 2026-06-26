@@ -77,7 +77,15 @@ export default function CalendarView({ groupId }) {
 
             {/* Group header */}
             <div className="mb-6">
-                <h1 className="text-xl font-medium text-text-dark">{group.name}</h1>
+                <div className="flex flex-row items-center justify-center gap-1">
+                    <h1 className="text-xl font-medium text-text-dark">{group.name}</h1>
+                    <button
+                        onClick={() => router.push(`/groups/${groupId}/settings`)}
+                        className="w-9 h-9 bg-white/70 border border-card-border rounded-xl flex items-center justify-center text-text-muted hover:text-primary hover:bg-available-me transition-colors cursor-pointer"
+                    >
+                        ⚙️
+                    </button>
+                </div>
                 <div className="flex gap-1 mt-2">
                     {members.map(m => (
                         <div key={m.id} className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">

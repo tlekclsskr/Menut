@@ -6,6 +6,7 @@ import { supabase } from '@/src/lib/supabase'
 import { useAuth } from '@/src/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import CalendarView from "@/src/components/CalendarView"
+import LoadingSpinner from '@/src/components/LoadingSpinner'
 
 export default function GroupsPage() {
 
@@ -105,7 +106,7 @@ export default function GroupsPage() {
         fetchProfile()
     }, [])
 
-    if (!isReady) return <div>Loading...</div>
+    if (!isReady) return <LoadingSpinner />
 
     const avatarLetter = profile?.name?.[0]?.toUpperCase() || '?'
 
@@ -124,7 +125,7 @@ export default function GroupsPage() {
                         }
                     }}
                 >
-                    <div className="w-11 h-11 rounded-xl bg-available-me flex items-center justify-center text-xl shrink-0 overflow-hidden">
+                    <div className="w-12 h-12 rounded-full bg-available-me flex items-center justify-center text-xl shrink-0 overflow-hidden">
                         {group.imageUrl ? (
                             <img src={group.imageUrl} className="w-full h-full object-cover" />
                         ) : '👥'}
@@ -143,7 +144,7 @@ export default function GroupsPage() {
         </div>
     )
 
-    const ActionButtons = () => (
+    const DesktopActionButtons = () => (
         <div className="flex gap-2 mt-3">
             <button
                 onClick={() => { setShowCreate(true); setShowJoin(false) }}
@@ -154,6 +155,23 @@ export default function GroupsPage() {
             <button
                 onClick={() => { setShowJoin(true); setShowCreate(false) }}
                 className="flex-1 bg-white text-primary border border-[#c4b8f0] py-2.5 rounded-xl text-sm font-medium"
+            >
+                เข้าร่วมกลุ่ม
+            </button>
+        </div>
+    )
+
+    const MobileActionButtons = () => (
+        <div className="flex gap-3 mt-3">
+            <button
+                onClick={() => { setShowCreate(true); setShowJoin(false) }}
+                className="flex-1 bg-primary text-white py-4 rounded-2xl text-base font-medium"
+            >
+                สร้างกลุ่ม
+            </button>
+            <button
+                onClick={() => { setShowJoin(true); setShowCreate(false) }}
+                className="flex-1 bg-white text-primary border border-[#c4b8f0] py-4 rounded-2xl text-base font-medium"
             >
                 เข้าร่วมกลุ่ม
             </button>
@@ -241,10 +259,10 @@ export default function GroupsPage() {
 
             {/* Mobile */}
             <div className="md:hidden flex flex-col min-h-screen">
-                <div className="bg-linear-to-r from-[#e8d5f5] to-[#ffd6e7] px-4 py-5 flex items-center justify-between">
+                <div className="bg-linear-to-r from-[#e8d5f5] to-[#ffd6e7] px-5 py-6 flex items-center justify-between">
                     <div>
-                        <h1 className="text-base font-medium text-text-dark">กลุ่มของฉัน</h1>
-                        <p className="text-sm text-text-muted">{groupLists.length} กลุ่ม</p>
+                        <h1 className="text-2xl font-medium text-text-dark">กลุ่มของฉัน</h1>
+                        <p className="text-base text-text-muted">{groupLists.length} กลุ่ม</p>
                     </div>
                     <button onClick={() => router.push('/profile')} className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0">
                         {profile?.imageUrl ? (
@@ -256,11 +274,11 @@ export default function GroupsPage() {
                         )}
                     </button>
                 </div>
-                <div className="flex-1 p-4">
+                <div className="flex-1 p-5">
                     <GroupList />
                 </div>
-                <div className="p-4 border-t border-white/50">
-                    <ActionButtons />
+                <div className="p-5 border-t border-white/50">
+                    <MobileActionButtons />
                 </div>
             </div>
 
@@ -285,7 +303,7 @@ export default function GroupsPage() {
                     <div className="flex-1 overflow-y-auto">
                         <GroupList />
                     </div>
-                    <ActionButtons />
+                    <DesktopActionButtons />
                 </div>
 
                 {/* Main area */}

@@ -137,7 +137,7 @@ router.put('/:id', async (req, res) => {
     const id = Number(req.params.id)
     const { name, imageUrl } = req.body
 
-    if  (!name) {
+    if  (!name && !imageUrl) {
         return res.status(400).json({ message: "กรุณากรอกชื่อหรือเลือกรูปภาพ" })
     }
 

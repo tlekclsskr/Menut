@@ -3,34 +3,33 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { fetchAPI } from "@/src/lib/api"
-import { supabase } from "@/src/lib/supabase"
 import { useAuth } from "@/src/hooks/useAuth"
+import { use } from "react"
+import { supabase } from "@/src/lib/supabase"
 
-export default function ProfilePage() {
-
+export default function GroupSettingPage({ params }) {
     useAuth()
-
-    const [updateProfile, setUpdateProfile] = useState({ name: '' })
-    const [file, setFile] = useState(null)
-    const isChange = updateProfile.name || file
-
+    const { id } = use(params)
     const router = useRouter()
+
+    const [updateGroupProfile, setUpdateGroupProfile] = useState({ name: '' })
+    const [file, setFile] = useState(null)
+    const isChange = updateGroupProfile.name || file
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         let imageUrl = ''
 
-        if (file) {
+        if(file) {
             const fileExt = file.name.split('.').pop()
             const fileName = `${Date.now()}.${fileExt}`
             const { data, error } = await supabase.storage
                 .from('avatars')
                 .upload(fileName, file)
 
-            if (error) {
+            if(error) {
                 console.log(error)
-                return
             }
 
             imageUrl = supabase.storage
@@ -39,12 +38,23 @@ export default function ProfilePage() {
         }
 
         try {
-            await fetchAPI('/auth/profile', {
+            await fetchAPI(`/groups/${id}`, {
                 method: 'PUT',
                 body: JSON.stringify({
-                    ...(updateProfile.name && { name: updateProfile.name }),
+                    ...(updateGroupProfile.name && { name: updateGroupProfile.name }),
                     ...(imageUrl && { imageUrl })
                 })
+            })
+            router.push('/groups')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const removeGroup = async () => {
+        try {
+            await fetchAPI(`/groups/${id}`,{
+                method: 'DELETE'
             })
             router.push('/groups')
         } catch (error) {
@@ -61,7 +71,7 @@ export default function ProfilePage() {
 
                 { /* Header */ }
                 <div className="mb-8">
-                    <h1 className="text-2xl font-medium text-text-dark">โปรไฟล์ของฉัน</h1>
+                    <h1 className="text-2xl font-medium text-text-dark">โปรไฟล์ของกลุ่ม</h1>
                 </div>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -83,15 +93,15 @@ export default function ProfilePage() {
                                 className="hidden"
                             />
                         </label>
-                        <p className="text-xs text-text-muted">กดเพื่ออัปโหลดรูปโปรไฟล์</p>
+                        <p className="text-xs text-text-muted">กดเพื่ออัปโหลดรูปโปรไฟล์กลุ่ม</p>
                     </div>
                     <div className="flex flex-col gap-1">
                         <label className="text-sm text-text-muted">ชื่อที่แสดง</label>
                         <input
-                            value={updateProfile.name}
-                            onChange={(e) => setUpdateProfile({...updateProfile, name: e.target.value})}
+                            value={updateGroupProfile.name}
+                            onChange={(e) => setUpdateGroupProfile({...updateGroupProfile, name: e.target.value})}
                             type="text"
-                            placeholder="ชื่อของคุณ"
+                            placeholder="ชื่อของกลุ่ม"
                             className="w-full px-4 py-3 bg-input-bg text-text-dark rounded-xl border border-card-border placeholder-[#c4b8f0] focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
                         />
                     </div>
@@ -101,18 +111,15 @@ export default function ProfilePage() {
                         className={`w-full py-3 rounded-xl font-medium text-sm transition-colors
                             ${isChange ? 'bg-primary text-white hover:bg-[#6a5eb5]' : 'bg-card-border text-text-muted cursor-not-allowed'}`}
                     >
-                        อัพเดตโปรไฟล์
+                        อัพเดตโปรไฟล์กลุ่ม
                     </button>
                 </form>
                 <button
                     type="button"
-                    onClick={() => {
-                        localStorage.removeItem('token')
-                        router.push('/login')
-                    }}
+                    onClick={removeGroup}
                     className="w-full py-3 rounded-xl font-medium text-sm text-red-400 border border-red-200 mt-20 hover:bg-red-50 transition-colors"
                 >
-                    ออกจากระบบ
+                    ลบกลุ่ม
                 </button>
             </div>
         </div>

@@ -5,7 +5,7 @@ import CalendarView from "@/src/components/CalendarView"
 import { use } from "react"
 import { useRouter } from "next/navigation"
 
-export default function GroupPage({ params }) {
+export default function SettingGroupPage({ params }) {
     const isReady = useAuth()
     const { id } = use(params)
     const router = useRouter()
