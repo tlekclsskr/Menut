@@ -11,6 +11,9 @@ export default function CalendarView({ groupId }) {
     const [members, setMembers] = useState([])
     const [availability, setAvailability] = useState([])
     const [myUserId, setMyUserId] = useState(null)
+    const [showMembers, setShowMembers] = useState(false)
+
+    const MAX_SHOW = 5
 
     const router = useRouter()
 
@@ -72,13 +75,56 @@ export default function CalendarView({ groupId }) {
         </div>
     )
 
+    const MemberAvatar = ({ member }) => (
+        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shrink-0">
+            {member.user.imageUrl ? (
+                <img src={member.user.imageUrl} alt={member.user.name} className="w-full h-full object-cover" />
+            ) : (
+                <div className="w-full h-full bg-available-me flex items-center justify-center text-xs text-primary font-medium">
+                    {member.user.name[0]}
+                </div>
+            )}
+        </div>
+    )
+
     return (
         <div className="p-6 max-w-full">
 
+            {/* Modal สมาชิก */}
+            {showMembers && (
+                <div
+                    className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
+                    onClick={() => setShowMembers(false)}
+                >
+                    <div
+                        className="bg-white rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h2 className="text-lg font-medium text-text-dark mb-4">สมาชิก {members.length} คน</h2>
+                        <div className="flex flex-col gap-3">
+                            {members.map(m => (
+                                <div key={m.id} className="flex items-center gap-3">
+                                    <MemberAvatar member={m} />
+                                    <p className="text-sm font-medium text-text-dark">{m.user.name}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Group header */}
             <div className="mb-6">
-                <div className="flex flex-row items-center justify-center gap-1">
-                    <h1 className="text-xl font-medium text-text-dark">{group.name}</h1>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        {/* รูปกลุ่ม — mobile only */}
+                        <div className="md:hidden w-16 h-16 rounded-full border-2 border-white bg-available-me overflow-hidden shrink-0">
+                            {group.imageUrl ? (
+                                <img src={group.imageUrl} className="w-full h-full object-cover" />
+                            ) : '👥'}
+                        </div>
+                        <h1 className="text-xl font-medium text-text-dark">{group.name}</h1>
+                    </div>
                     <button
                         onClick={() => router.push(`/groups/${groupId}/settings`)}
                         className="w-9 h-9 bg-white/70 border border-card-border rounded-xl flex items-center justify-center text-text-muted hover:text-primary hover:bg-available-me transition-colors cursor-pointer"
@@ -86,22 +132,17 @@ export default function CalendarView({ groupId }) {
                         ⚙️
                     </button>
                 </div>
-                <div className="flex gap-1 mt-2">
-                    {members.map(m => (
-                        <div key={m.id} className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
-                            {m.user.imageUrl ? (
-                                <img 
-                                    src={m.user.imageUrl} 
-                                    alt={m.user.name}
-                                    className="w-full h-full object-cover"
-                                />
-                            ) : (
-                                <div className="w-full h-full bg-available-me flex items-center justify-center text-xs text-primary font-medium">
-                                    {m.user.name[0]}
-                                </div>
-                            )}
-                        </div>
+
+                {/* Members */}
+                <div className="flex gap-1 mt-8 cursor-pointer" onClick={() => setShowMembers(true)}>
+                    {members.slice(0, MAX_SHOW).map(m => (
+                        <MemberAvatar key={m.id} member={m} />
                     ))}
+                    {members.length > MAX_SHOW && (
+                        <div className="w-10 h-10 rounded-full bg-input-bg border-2 border-white flex items-center justify-center text-xs text-primary font-medium">
+                            +{members.length - MAX_SHOW}
+                        </div>
+                    )}
                 </div>
             </div>
 
