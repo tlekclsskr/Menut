@@ -88,6 +88,7 @@ router.get('/check-email', async (req, res) => {
         const user = await prisma.user.findUnique({ where: { email } })
         res.status(200).json({ exists: !!user })
     } catch (error) {
+        console.log('check-email error:', error.message)
         return res.status(500).json({ message: "Server Error" })
     }
 })
