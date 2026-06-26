@@ -28,7 +28,6 @@ export default function GroupsPage() {
             const groups = await fetchAPI('/groups')
             setGroupLists(groups)
         } catch (error) {
-            console.log(error)
         }
     }
 
@@ -37,7 +36,6 @@ export default function GroupsPage() {
             const data = await fetchAPI('/auth/profile')
             setProfile(data)
         } catch (error) {
-            console.log(error)
         }
     }
 
@@ -52,7 +50,6 @@ export default function GroupsPage() {
             setShowJoin(false)
             fetchGroups()
         } catch (error) {
-            console.log(error)
         }
     }
 
@@ -75,7 +72,6 @@ export default function GroupsPage() {
                 .upload(fileName, file)
 
             if (error) {
-                console.log(error)
                 return
             }
 
@@ -97,7 +93,6 @@ export default function GroupsPage() {
             setShowCreate(false)
             fetchGroups()
         } catch (error) {
-            console.log(error)
         }
     }
 

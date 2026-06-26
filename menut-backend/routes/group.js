@@ -189,7 +189,6 @@ router.delete('/:id', async (req, res) => {
         const deleteGroup = await prisma.group.delete({ where: { id } })
         res.status(200).json({ message: "ลบกลุ่มสำเร็จ" })
     } catch (error) {
-        console.log(error)
         return res.status(500).json({ message: "Server Error" })
     }
 })

@@ -43,7 +43,6 @@ export default function CalendarView({ groupId }) {
             setAvailability(availabilityInfo)
             setMyUserId(profile.id)
         } catch (error) {
-            console.log(error)
             router.push('/groups')
         }
     }

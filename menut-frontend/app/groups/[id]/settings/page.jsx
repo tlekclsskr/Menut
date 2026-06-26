@@ -29,7 +29,6 @@ export default function GroupSettingPage({ params }) {
                 .upload(fileName, file)
 
             if(error) {
-                console.log(error)
             }
 
             imageUrl = supabase.storage
@@ -47,7 +46,6 @@ export default function GroupSettingPage({ params }) {
             })
             router.push('/groups')
         } catch (error) {
-            console.log(error)
         }
     }
 
@@ -58,7 +56,6 @@ export default function GroupSettingPage({ params }) {
             })
             router.push('/groups')
         } catch (error) {
-            console.log(error)
         }
     }
 
