@@ -6,6 +6,7 @@ import { fetchAPI } from "@/src/lib/api"
 import { useAuth } from "@/src/hooks/useAuth"
 import { use } from "react"
 import { supabase } from "@/src/lib/supabase"
+import { ButtonSpinner } from "@/src/components/ButtonSpinner"
 import LoadingSpinner from "@/src/components/LoadingSpinner"
 
 export default function GroupSettingPage({ params }) {
@@ -16,11 +17,14 @@ export default function GroupSettingPage({ params }) {
     const [updateGroupProfile, setUpdateGroupProfile] = useState({ name: '' })
     const [file, setFile] = useState(null)
     const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
     const isChange = updateGroupProfile.name || file
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError('')
+        setIsLoading(true)
 
         let imageUrl = ''
 
@@ -33,6 +37,7 @@ export default function GroupSettingPage({ params }) {
 
             if (uploadError) {
                 setError('อัปโหลดรูปไม่สำเร็จ ลองใหม่อีกครั้ง')
+                setIsLoading(false)
                 return
             }
 
@@ -52,22 +57,27 @@ export default function GroupSettingPage({ params }) {
             router.push('/groups')
         } catch {
             setError('อัปเดตกลุ่มไม่สำเร็จ ลองใหม่อีกครั้ง')
+        } finally {
+            setIsLoading(false)
         }
     }
 
     const removeGroup = async () => {
         if (!window.confirm('ต้องการลบกลุ่มนี้ใช่ไหม? การกระทำนี้ไม่สามารถย้อนกลับได้')) return
+        setIsDeleting(true)
         try {
             await fetchAPI(`/groups/${id}`, { method: 'DELETE' })
             router.push('/groups')
         } catch {
             setError('ลบกลุ่มไม่สำเร็จ ลองใหม่อีกครั้ง')
+        } finally {
+            setIsDeleting(false)
         }
     }
 
     if (!isReady) return <LoadingSpinner />
 
-    const btnPrimary = isChange
+    const btnPrimary = isChange && !isLoading
         ? 'bg-primary text-white hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-primary/30'
         : 'bg-card-border text-text-muted cursor-not-allowed'
 
@@ -126,10 +136,15 @@ export default function GroupSettingPage({ params }) {
 
                     <button
                         type="submit"
-                        disabled={!isChange}
+                        disabled={!isChange || isLoading}
                         className={`w-full py-3 rounded-xl font-medium text-sm transition-colors ${btnPrimary}`}
                     >
-                        อัปเดตกลุ่ม
+                        {isLoading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <ButtonSpinner />
+                                {file ? 'กำลังอัปโหลด...' : 'กำลังอัปเดต...'}
+                            </div>
+                        ) : 'อัปเดตกลุ่ม'}
                     </button>
                 </form>
 
@@ -137,9 +152,15 @@ export default function GroupSettingPage({ params }) {
                     <button
                         type="button"
                         onClick={removeGroup}
+                        disabled={isDeleting}
                         className="w-full py-3 rounded-xl font-medium text-sm text-error border border-error-border hover:bg-error-bg transition-colors focus-visible:ring-2 focus-visible:ring-error/30"
                     >
-                        ลบกลุ่ม
+                        {isDeleting ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <ButtonSpinner className="border-error/30 border-t-error" />
+                                กำลังลบ...
+                            </div>
+                        ) : 'ลบกลุ่ม'}
                     </button>
                 </div>
             </div>

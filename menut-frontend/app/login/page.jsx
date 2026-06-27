@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { fetchAPI } from "@/src/lib/api"
 import { useAuth } from "@/src/hooks/useAuth"
+import { ButtonSpinner } from "@/src/components/ButtonSpinner"
 
 export default function LoginPage() {
 
@@ -15,10 +16,12 @@ export default function LoginPage() {
         password: ''
     })
     const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const isValid = loginData.email && loginData.password
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setIsLoading(true)
         try {
             const result = await fetchAPI('/auth/login', {
                 method: 'POST',
@@ -31,10 +34,12 @@ export default function LoginPage() {
             router.push('/groups')
         } catch {
             setError('อีเมลหรือรหัสผ่านไม่ถูกต้อง')
+        } finally {
+            setIsLoading(false)
         }
     }
 
-    const btnPrimary = isValid
+    const btnPrimary = isValid && !isLoading
         ? 'bg-primary text-white hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-primary/30'
         : 'bg-card-border text-text-muted cursor-not-allowed'
 
@@ -79,11 +84,16 @@ export default function LoginPage() {
 
                     <button
                         type="submit"
-                        disabled={!isValid}
+                        disabled={!isValid || isLoading}
                         className={`w-full py-3 rounded-xl font-medium text-sm transition-colors ${btnPrimary}`}
                     >
-                        เข้าสู่ระบบ
-                    </button>
+                        {isLoading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <ButtonSpinner />
+                                กำลังโหลด...
+                            </div>
+                        ) : 'เข้าสู่ระบบ'}
+                        </button>
 
                     <div className="flex items-center gap-4">
                         <div className="flex-1 h-px bg-card-border" />
