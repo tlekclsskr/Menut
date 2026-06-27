@@ -150,14 +150,27 @@ export default function CalendarView({ groupId }) {
                         <h1 className="text-xl font-medium text-text-dark truncate">{group.name}</h1>
                         <span className="text-sm text-text-muted shrink-0">({members.length})</span>
                     </div>
-                    <button
-                        type="button"
-                        onClick={() => router.push(`/groups/${groupId}/settings`)}
-                        className="w-10 h-10 bg-white/70 border border-card-border rounded-xl flex items-center justify-center text-text-muted hover:text-primary hover:bg-available-me transition-colors"
-                        aria-label="ตั้งค่ากลุ่ม"
-                    >
-                        ⚙️
-                    </button>
+                    <div className="flex gap-2">
+                        <button
+                            type="button"
+                            onClick={fetchAll}
+                            className="w-10 h-10 bg-white/70 border border-card-border rounded-xl flex items-center justify-center text-text-muted hover:text-primary hover:bg-available-me transition-colors"
+                            aria-label="รีโหลดปฏิทิน"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+                                <path d="M21 3v5h-5"/>
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => router.push(`/groups/${groupId}/settings`)}
+                            className="w-10 h-10 bg-white/70 border border-card-border rounded-xl flex items-center justify-center text-text-muted hover:text-primary hover:bg-available-me transition-colors"
+                            aria-label="ตั้งค่ากลุ่ม"
+                        >
+                            ⚙️
+                        </button>
+                    </div>
                 </div>
 
                 <button
