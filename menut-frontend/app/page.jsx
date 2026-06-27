@@ -1,6 +1,12 @@
+'use client'
+
 import Image from "next/image"
+import { useAuth } from "@/src/hooks/useAuth"
 
 export default function LandingPage() {
+
+    useAuth({ redirectIfFound: true })
+
     return (
         <div className="min-h-screen bg-shell flex items-center justify-center font-sans antialiased">
             <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 py-12 md:py-0 md:px-16 gap-12 md:gap-8">
