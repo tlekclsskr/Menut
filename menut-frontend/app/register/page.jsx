@@ -5,6 +5,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { fetchAPI } from "@/src/lib/api"
 import { useAuth } from "@/src/hooks/useAuth"
+import { ButtonSpinner } from "@/src/components/ButtonSpinner"
 
 export default function RegisterPage() {
 
@@ -17,6 +18,7 @@ export default function RegisterPage() {
     })
     const [isCheck, setIsCheck] = useState(false)
     const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const isValid = registerData.email 
         && registerData.password 
         && registerData.password === registerData.retypedPassword
@@ -27,11 +29,19 @@ export default function RegisterPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        
-        const { exists } = await fetchAPI(`/auth/check-email?email=${registerData.email}`)
-        if (exists) {
-            setError('อีเมลนี้มีผู้ใช้งานแล้ว กรุณาใช้อีเมลอื่น')
+        setIsLoading(true)
+
+        try {
+            const { exists } = await fetchAPI(`/auth/check-email?email=${registerData.email}`)
+            if (exists) {
+                setError('อีเมลนี้มีผู้ใช้งานแล้ว กรุณาใช้อีเมลอื่น')
+                return
+            }
+        } catch (error) {
+            setError('เกิดข้อผิดพลาด ลองใหม่อีกครั้ง')
             return
+        } finally {
+            setIsLoading(false)
         }
 
         setContextData({
@@ -43,7 +53,7 @@ export default function RegisterPage() {
         router.push('/onboarding')
     }
 
-    const btnPrimary = isValid
+    const btnPrimary = isValid && !isLoading
         ? 'bg-primary text-white hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-primary/30'
         : 'bg-card-border text-text-muted cursor-not-allowed'
 
@@ -104,10 +114,15 @@ export default function RegisterPage() {
                     {error && <p className="text-error text-sm text-center" role="alert">{error}</p>}
                     <button 
                         type="submit" 
-                        disabled={!isValid}
+                        disabled={!isValid && isLoading}
                         className={`w-full py-3 rounded-xl font-medium text-sm transition-colors ${btnPrimary}`}
                     >
-                        ถัดไป →
+                        {isLoading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <ButtonSpinner />
+                                กำลังตรวจสอบ...
+                            </div>
+                        ) : 'ถัดไป →'}
                     </button>
                 </form>
                 

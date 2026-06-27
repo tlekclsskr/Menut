@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { fetchAPI } from "@/src/lib/api"
 import { supabase } from "@/src/lib/supabase"
 import { useAuth } from "@/src/hooks/useAuth"
+import { ButtonSpinner } from "@/src/components/ButtonSpinner"
 import LoadingSpinner from "@/src/components/LoadingSpinner"
 
 export default function ProfilePage() {
@@ -14,6 +15,7 @@ export default function ProfilePage() {
     const [updateProfile, setUpdateProfile] = useState({ name: '' })
     const [file, setFile] = useState(null)
     const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const isChange = updateProfile.name || file
 
     const router = useRouter()
@@ -21,6 +23,7 @@ export default function ProfilePage() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError('')
+        setIsLoading(true)
 
         let imageUrl = ''
 
@@ -33,6 +36,7 @@ export default function ProfilePage() {
 
             if (uploadError) {
                 setError('อัปโหลดรูปไม่สำเร็จ ลองใหม่อีกครั้ง')
+                setIsLoading(false)
                 return
             }
 
@@ -52,12 +56,14 @@ export default function ProfilePage() {
             router.push('/groups')
         } catch {
             setError('อัปเดตโปรไฟล์ไม่สำเร็จ ลองใหม่อีกครั้ง')
+        } finally {
+            setIsLoading(false)
         }
     }
 
     if (!isReady) return <LoadingSpinner />
 
-    const btnPrimary = isChange
+    const btnPrimary = isChange && !isLoading
         ? 'bg-primary text-white hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-primary/30'
         : 'bg-card-border text-text-muted cursor-not-allowed'
 
@@ -116,10 +122,15 @@ export default function ProfilePage() {
 
                     <button
                         type="submit"
-                        disabled={!isChange}
+                        disabled={!isChange || isLoading}
                         className={`w-full py-3 rounded-xl font-medium text-sm transition-colors ${btnPrimary}`}
                     >
-                        อัปเดตโปรไฟล์
+                        {isLoading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <ButtonSpinner />
+                                {file ? 'กำลังอัปโหลด...' : 'กำลังอัปเดต...'}
+                            </div>
+                        ) : 'อัปเดตโปรไฟล์'}
                     </button>
                 </form>
 

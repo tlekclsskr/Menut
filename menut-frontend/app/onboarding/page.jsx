@@ -5,6 +5,7 @@ import { useRegister } from "@/src/context/RegisterContext"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/src/lib/supabase"
 import { fetchAPI } from "@/src/lib/api"
+import { ButtonSpinner } from "@/src/components/ButtonSpinner"
 
 export default function OnboardingPage() {
     const [registerData, setRegisterData] = useState({
@@ -13,6 +14,7 @@ export default function OnboardingPage() {
     })
     const [file, setFile] = useState(null)
     const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const isValid = registerData.name && registerData.birthDate
 
     const { registerData: contextData } = useRegister()
@@ -27,6 +29,7 @@ export default function OnboardingPage() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError('')
+        setIsLoading(true)
 
         let imageUrl = ''
 
@@ -39,6 +42,7 @@ export default function OnboardingPage() {
 
             if (uploadError) {
                 setError('อัปโหลดรูปไม่สำเร็จ ลองใหม่อีกครั้ง')
+                setIsLoading(false)
                 return
             }
 
@@ -61,10 +65,12 @@ export default function OnboardingPage() {
             router.push('/login')
         } catch {
             setError('สมัครสมาชิกไม่สำเร็จ ลองใหม่อีกครั้ง')
+        } finally {
+            setIsLoading(false)
         }
     }
 
-    const btnPrimary = isValid
+    const btnPrimary = isValid && !isLoading
         ? 'bg-primary text-white hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-primary/30'
         : 'bg-card-border text-text-muted cursor-not-allowed'
 
@@ -134,10 +140,15 @@ export default function OnboardingPage() {
 
                     <button
                         type="submit"
-                        disabled={!isValid}
+                        disabled={!isValid || isLoading}
                         className={`w-full py-3 rounded-xl font-medium text-sm transition-colors ${btnPrimary}`}
                     >
-                        สมัครสมาชิก
+                        {isLoading ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <ButtonSpinner />
+                                {file ? 'กำลังอัปโหลด...' : 'กำลังสมัคร...'}
+                            </div>
+                        ) : 'สมัครสมาชิก'}
                     </button>
                 </form>
             </div>
