@@ -95,7 +95,7 @@ export default function OnboardingPage() {
                             </div>
                             <input
                                 type="file"
-                                accept="image/*"
+                                accept="image/jpeg, image/png, image/webp"
                                 onChange={(e) => setFile(e.target.files[0])}
                                 className="hidden"
                             />
