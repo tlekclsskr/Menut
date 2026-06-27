@@ -21,7 +21,7 @@ export default function GroupSettingPage({ params }) {
     const [isDeleting, setIsDeleting] = useState(false)
     const [isRegenerating, setIsRegenerating] = useState(false)
     const [inviteCode, setInviteCode] = useState('')
-    const [showDeleteModal, setIsShowDeleteModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [showRegenerateModal, setShowRegenerateModal] = useState(false)
     const isChange = updateGroupProfile.name || file
 
@@ -85,7 +85,7 @@ export default function GroupSettingPage({ params }) {
             router.push('/groups')
         } catch {
             setError('ลบกลุ่มไม่สำเร็จ ลองใหม่อีกครั้ง')
-            setIsShowDeleteModal(false)
+            setShowDeleteModal(false)
         } finally {
             setIsDeleting(false)
         }
@@ -94,7 +94,7 @@ export default function GroupSettingPage({ params }) {
     const handleRegenerateInviteCode = async () => {
         setIsRegenerating(true)
         try {
-            const data = await fetchAPI(`/groups/${id}/regenerate-invite`, { method: POST })
+            const data = await fetchAPI(`/groups/${id}/regenerate-invite`, { method: 'POST' })
             setInviteCode(data.inviteCode)
             setShowRegenerateModal(false)
         } catch {
