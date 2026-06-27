@@ -56,19 +56,18 @@
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-gradient-lavender),
+    var(--color-gradient-blush),
+    var(--color-gradient-cream)
+  ) fixed;
   color: var(--foreground);
   font-family: var(--font-ibm), sans-serif;
   line-height: 1.5;
 }
 
 html, body {
-  background: linear-gradient(
-    to bottom right,
-    var(--color-gradient-lavender),
-    var(--color-gradient-blush),
-    var(--color-gradient-cream)
-  );
   overscroll-behavior: none;
 }
 
