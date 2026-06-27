@@ -4,8 +4,12 @@ import { useRegister } from "@/src/context/RegisterContext"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { fetchAPI } from "@/src/lib/api"
+import { useAuth } from "@/src/hooks/useAuth"
 
 export default function RegisterPage() {
+
+    useAuth({ redirectIfFound: true })
+
     const [registerData, setRegisterData] = useState({
         email: '',
         password: '',

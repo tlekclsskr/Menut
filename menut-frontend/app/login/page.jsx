@@ -3,8 +3,12 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { fetchAPI } from "@/src/lib/api"
+import { useAuth } from "@/src/hooks/useAuth"
 
 export default function LoginPage() {
+
+    useAuth({ redirectIfFound: true })
+
     const router = useRouter()
     const [loginData, setLoginData] = useState({
         email: '',
