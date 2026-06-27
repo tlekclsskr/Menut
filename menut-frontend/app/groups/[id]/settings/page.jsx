@@ -94,7 +94,7 @@ export default function GroupSettingPage({ params }) {
     const handleRegenerateInviteCode = async () => {
         setIsRegenerating(true)
         try {
-            const data = await fetchAPI(`/groups/${id}/regenerate-invte`, { method: POST })
+            const data = await fetchAPI(`/groups/${id}/regenerate-invite`, { method: POST })
             setInviteCode(data.inviteCode)
             setShowRegenerateModal(false)
         } catch {
