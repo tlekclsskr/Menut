@@ -63,7 +63,12 @@ body {
 }
 
 html, body {
-  background-color: #ffefc5;
+  background: linear-gradient(
+    to bottom right,
+    var(--color-gradient-lavender),
+    var(--color-gradient-blush),
+    var(--color-gradient-cream)
+  );
   overscroll-behavior: none;
 }
 
