@@ -6,6 +6,8 @@ const crypto = require('crypto')
 const authMiddleware = require('../middleware/auth')
 const { group } = require('console')
 
+const { v4: uuidv4 } = require('uuid')
+
 // GET METHOD
 router.get('/', async (req, res) => {
     try {
@@ -129,6 +131,29 @@ router.post('/join', async (req, res) => {
         res.status(200).json({ message: "เข้าร่วมกลุ่มสำเร็จ" })
     } catch (error) {
         return res.status(500).json({ message: "Server Error" })
+    }
+})
+
+router.post('/:id/regenerate-invite', async (req, res) => {
+    const id = Number(req.params.id)
+
+    try {
+        const group = await prisma.group.findUnique({
+            where: { id }
+        })
+
+        if (!group) {
+            return res.status(404).json({ message: 'ไม่พบกลุ่ม' })
+        }
+
+        const updatedGroup = await prisma.group.update({
+            where: { id },
+            data: { inviteCode: uuidv4().slice(0, 8) }
+        })
+
+        res.status(200).json({ inviteCode: updatedGroup.inviteCode })
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error' })
     }
 })
 
