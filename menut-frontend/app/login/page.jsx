@@ -93,7 +93,11 @@ export default function LoginPage() {
                                 กำลังโหลด...
                             </div>
                         ) : 'เข้าสู่ระบบ'}
-                        </button>
+                    </button>
+
+                    <a href="/forgot-password" className="text-center text-xs text-primary hover:underline">
+                        ลืมรหัสผ่าน?
+                    </a>
 
                     <div className="flex items-center gap-4">
                         <div className="flex-1 h-px bg-card-border" />

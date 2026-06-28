@@ -3,12 +3,14 @@
 import { useState } from "react";
 import { fetchAPI } from "@/src/lib/api";
 import { ButtonSpinner } from "@/src/components/ButtonSpinner";
+import { useRouter } from "next/navigation";
 
 export default function ForgotPasswordPage() {
     const [email, setEmail] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
     const isValid = email.trim() !== ''
+    const router = useRouter()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -33,7 +35,14 @@ export default function ForgotPasswordPage() {
     return (
         <div className="min-h-screen bg-shell flex items-center justify-center p-4">
             <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-card-border">
-                
+                <button
+                    type="button"
+                    onClick={() => router.back()}
+                    className="mb-6 w-10 h-10 bg-input-bg border border-card-border rounded-xl flex items-center justify-center text-primary hover:bg-available-me transition-colors"
+                    aria-label="กลับ"
+                >
+                    ←
+                </button>
                 <div className="mb-8">
                     <h1 className="text-2xl font-medium text-text-dark">ลืมรหัสผ่าน</h1>
                     <p className="text-text-muted text-sm mt-1">เราจะส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของคุณ</p>
