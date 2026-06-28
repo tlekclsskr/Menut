@@ -19,8 +19,9 @@ model User  {
   birthDate     DateTime  
   imageUrl      String?
   createdAt     DateTime        @default(now())
-  groups        GroupMember[]
-  availability  Availability[]  
+  groups          GroupMember[]
+  availability    Availability[]
+  PasswordResets  PasswordReset[] 
 }
 
 model Group {
@@ -29,8 +30,8 @@ model Group {
   imageUrl      String?
   inviteCode    String          @unique 
   createdAt     DateTime        @default(now())
-  members        GroupMember[]
-  availability  Availability[]  
+  members         GroupMember[]
+  availability    Availability[]  
 }
 
 model GroupMember {
@@ -49,4 +50,12 @@ model Availability  {
   date    DateTime
   user    User      @relation(fields: [userId], references: [id])
   group   Group     @relation(fields: [groupId], references: [id])
+}
+
+model PasswordReset {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  token     String    @unique
+  expiresAt DateTime
+  user      User      @relation(fields: [userId], references: [id])
 }
