@@ -1,6 +1,7 @@
 import { IBM_Plex_Sans_Thai_Looped } from "next/font/google"
 import "./globals.css"
 import { RegisterProvider } from "@/src/context/RegisterContext"
+import { ThemeProvider } from "next-themes"
 
 const ibmPlex = IBM_Plex_Sans_Thai_Looped({
   subsets: ['thai', 'latin'],
@@ -15,11 +16,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="th">
+    <html lang="th" suppressHydrationWarning>
       <body className={`${ibmPlex.variable} font-(--font-ibm) antialiased`}>
-        <RegisterProvider>
-          {children}
-        </RegisterProvider>
+        <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
+          <RegisterProvider>
+            {children}
+          </RegisterProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

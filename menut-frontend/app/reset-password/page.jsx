@@ -43,7 +43,7 @@ const ResetPasswordContent = () => {
 
     return (
         <div className="min-h-screen bg-shell flex items-center justify-center p-4">
-            <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-card-border">
+            <div className="w-full max-w-md bg-white dark:bg-[#2a2445] rounded-3xl p-8 border border-card-border">
                 <div className="mb-8">
                     <h1 className="text-2xl font-medium text-text-dark">ตั้งรหัสผ่านใหม่</h1>
                     <p className="text-text-muted text-sm mt-1">กรอกรหัสผ่านใหม่ของคุณ</p>
