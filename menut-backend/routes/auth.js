@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
         const user = await prisma.user.findUnique({ where: { email } })
         
         if  (!user) {
-            return res.status(404).json({ message: "ไม่พบ user นี้" })
+            return res.status(401).json({ message: "อีเมลหรือรหัสผ่านไม่ถูกต้อง" })
         }
 
         const isMatch = await bcrypt.compare(password, user.password)
