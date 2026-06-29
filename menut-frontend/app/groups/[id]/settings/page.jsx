@@ -120,7 +120,7 @@ export default function GroupSettingPage({ params }) {
                     onClick={() => setShowDeleteModal(false)}
                 >
                     <div
-                        className="bg-white rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
+                        className="bg-white dark:bg-[#2a2445] rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <h2 className="text-lg font-medium text-text-dark mb-2">ลบกลุ่มนี้ใช่ไหม?</h2>
@@ -129,7 +129,7 @@ export default function GroupSettingPage({ params }) {
                             <button
                                 type="button"
                                 onClick={() => setShowDeleteModal(false)}
-                                className="flex-1 py-3 rounded-xl text-sm font-medium bg-white text-primary border border-border-accent hover:bg-input-bg transition-colors"
+                                className="flex-1 py-3 rounded-xl text-sm font-medium bg-white dark:bg-[#2a2445] text-primary border border-border-accent hover:bg-input-bg transition-colors"
                             >
                                 ยกเลิก
                             </button>
@@ -158,7 +158,7 @@ export default function GroupSettingPage({ params }) {
                     onClick={() => setShowRegenerateModal(false)}
                 >
                     <div
-                        className="bg-white rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
+                        className="bg-white dark:bg-[#2a2445] rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <h2 className="text-lg font-medium text-text-dark mb-2">สร้าง Invite Code ใหม่ใช่ไหม?</h2>
@@ -167,7 +167,7 @@ export default function GroupSettingPage({ params }) {
                             <button
                                 type="button"
                                 onClick={() => setShowRegenerateModal(false)}
-                                className="flex-1 py-3 rounded-xl text-sm font-medium bg-white text-primary border border-border-accent hover:bg-input-bg transition-colors"
+                                className="flex-1 py-3 rounded-xl text-sm font-medium bg-white dark:bg-[#2a2445] text-primary border border-border-accent hover:bg-input-bg transition-colors"
                             >
                                 ยกเลิก
                             </button>
@@ -189,7 +189,7 @@ export default function GroupSettingPage({ params }) {
                 </div>
             )}
 
-            <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-card-border">
+            <div className="w-full max-w-md bg-white dark:bg-[#2a2445] rounded-3xl p-8 border border-card-border">
                 <button
                     type="button"
                     onClick={() => router.back()}

@@ -76,7 +76,7 @@ export default function OnboardingPage() {
 
     return (
         <div className="min-h-screen bg-shell flex items-center justify-center p-4">
-            <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-card-border">
+            <div className="w-full max-w-md bg-white dark:bg-[#2a2445] rounded-3xl p-8 border border-card-border">
                 <div className="flex gap-2 mb-6" aria-label="ขั้นตอนที่ 2 จาก 2">
                     <div className="w-3 h-3 rounded-full bg-card-border" aria-hidden="true" />
                     <div className="w-5 h-3 rounded-full bg-primary" aria-hidden="true" />

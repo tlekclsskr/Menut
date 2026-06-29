@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import CalendarView from "@/src/components/CalendarView"
 import { ButtonSpinner } from '@/src/components/ButtonSpinner'
 import LoadingSpinner from '@/src/components/LoadingSpinner'
+import { ThemeToggle } from '@/src/components/ThemeToggle'
 
 export default function GroupsPage() {
 
@@ -124,7 +125,7 @@ export default function GroupsPage() {
     const avatarLetter = profile?.name?.[0]?.toUpperCase() || '?'
 
     const btnPrimary = 'bg-primary text-white font-medium transition-colors hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-primary/30'
-    const btnSecondary = 'bg-white text-primary border border-border-accent font-medium transition-colors hover:bg-input-bg focus-visible:ring-2 focus-visible:ring-primary/30'
+    const btnSecondary = 'bg-white dark:bg-[#2a2445] text-primary border border-border-accent font-medium transition-colors hover:bg-input-bg focus-visible:ring-2 focus-visible:ring-primary/30'
 
     const GroupList = () => (
         groupLists.length === 0 ? (
@@ -140,7 +141,7 @@ export default function GroupsPage() {
                         key={group.id}
                         role="button"
                         tabIndex={0}
-                        className={`bg-white border rounded-2xl px-4 py-3.5 flex items-center gap-4 cursor-pointer transition-colors shadow-sm
+                        className={`bg-white dark:bg-[#2a2445] border rounded-2xl px-4 py-3.5 flex items-center gap-4 cursor-pointer transition-colors shadow-sm
                             ${selectedGroupId === group.id ? 'border-primary' : 'border-border-subtle hover:border-border-accent'}`}
                         onClick={() => {
                             if (window.innerWidth < 768) {
@@ -230,7 +231,7 @@ export default function GroupsPage() {
                     role="presentation"
                 >
                     <div
-                        className="bg-white rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
+                        className="bg-white dark:bg-[#2a2445] rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
                         onClick={(e) => e.stopPropagation()}
                         role="dialog"
                         aria-modal="true"
@@ -240,7 +241,7 @@ export default function GroupsPage() {
                         <form onSubmit={handleCreate} className="flex flex-col gap-3">
                             <div className="flex flex-col items-center mb-2">
                                 <label className="cursor-pointer">
-                                    <div className="w-16 h-16 rounded-2xl bg-input-bg border-2 border-dashed border-border-accent flex items-center justify-center text-2xl hover:bg-available-me transition-colors overflow-hidden">
+                                    <div className="w-16 h-16 rounded-2xl bg-input-bg dark:bg-[#1e1a35] border-2 border-dashed border-border-accent flex items-center justify-center text-2xl hover:bg-available-me transition-colors overflow-hidden">
                                         {file ? (
                                             <img src={URL.createObjectURL(file)} alt="" className="w-full h-full object-cover" />
                                         ) : '🖼️'}
@@ -259,7 +260,7 @@ export default function GroupsPage() {
                                 onChange={(e) => setAddGroupData({ ...addGroupData, name: e.target.value })}
                                 placeholder="ชื่อกลุ่ม"
                                 required
-                                className="w-full px-4 py-3 bg-input-bg rounded-xl border border-card-border text-sm text-text-dark placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                className="w-full px-4 py-3 bg-input-bg dark:bg-[#1e1a35] rounded-xl border border-card-border text-sm text-text-dark placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary/30"
                             />
                             {createError && (
                                 <p className="text-error text-sm text-center" role="alert">{createError}</p>
@@ -291,7 +292,7 @@ export default function GroupsPage() {
                     role="presentation"
                 >
                     <div
-                        className="bg-white rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
+                        className="bg-white dark:bg-[#2a2445] rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
                         onClick={(e) => e.stopPropagation()}
                         role="dialog"
                         aria-modal="true"
@@ -304,7 +305,7 @@ export default function GroupsPage() {
                                 onChange={(e) => { setInviteCode(e.target.value); setJoinError('') }}
                                 placeholder="รหัสเชิญ"
                                 required
-                                className="w-full px-4 py-3 bg-input-bg rounded-xl border border-card-border text-sm text-text-dark placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary/30"
+                                className="w-full px-4 py-3 bg-input-bg dark:bg-[#1e1a35] rounded-xl border border-card-border text-sm text-text-dark placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary/30"
                             />
                             {joinError && (
                                 <p className="text-error text-sm text-center" role="alert">{joinError}</p>
@@ -345,36 +346,8 @@ export default function GroupsPage() {
                         <h1 className="text-2xl font-medium text-text-dark">กลุ่มของฉัน</h1>
                         <p className="text-base text-text-muted">{groupLists.length} กลุ่ม</p>
                     </div>
-                    <button
-                        type="button"
-                        onClick={() => router.push('/profile')}
-                        className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0 focus-visible:ring-2 focus-visible:ring-primary/30"
-                        aria-label="โปรไฟล์"
-                    >
-                        {profile?.imageUrl ? (
-                            <img src={profile.imageUrl} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                            <div className="w-full h-full bg-white border border-card-border flex items-center justify-center text-sm font-medium text-primary">
-                                {avatarLetter}
-                            </div>
-                        )}
-                    </button>
-                </div>
-                <div className="flex-1 p-5">
-                    <GroupList />
-                </div>
-                <div className="p-5 border-t border-white/50">
-                    <MobileActionButtons />
-                </div>
-            </div>
-
-            <div className="hidden md:flex min-h-screen">
-                <div className="w-70 bg-white/30 backdrop-blur-md flex flex-col p-4 border-r border-card-border">
-                    <div className="flex items-center justify-between mb-4">
-                        <div>
-                            <h1 className="text-sm font-medium text-text-dark">กลุ่มของฉัน</h1>
-                            <p className="text-xs text-text-muted">{groupLists.length} กลุ่ม</p>
-                        </div>
+                    <div className='flex items-center gap-2'>
+                        <ThemeToggle />
                         <button
                             type="button"
                             onClick={() => router.push('/profile')}
@@ -389,6 +362,40 @@ export default function GroupsPage() {
                                 </div>
                             )}
                         </button>
+                    </div>
+                </div>
+                <div className="flex-1 p-5">
+                    <GroupList />
+                </div>
+                <div className="p-5 border-t border-white/50">
+                    <MobileActionButtons />
+                </div>
+            </div>
+
+            <div className="hidden md:flex min-h-screen">
+                <div className="w-70 bg-white/30 dark:bg-white/5 backdrop-blur-md flex flex-col p-4 border-r border-card-border">
+                    <div className="flex items-center justify-between mb-4">
+                        <div>
+                            <h1 className="text-sm font-medium text-text-dark">กลุ่มของฉัน</h1>
+                            <p className="text-xs text-text-muted">{groupLists.length} กลุ่ม</p>
+                        </div>
+                        <div className='flex items-center gap-2'>
+                            <ThemeToggle />
+                            <button
+                                type="button"
+                                onClick={() => router.push('/profile')}
+                                className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0 focus-visible:ring-2 focus-visible:ring-primary/30"
+                                aria-label="โปรไฟล์"
+                            >
+                                {profile?.imageUrl ? (
+                                    <img src={profile.imageUrl} alt="" className="w-full h-full object-cover" />
+                                ) : (
+                                    <div className="w-full h-full bg-white border border-card-border flex items-center justify-center text-sm font-medium text-primary">
+                                        {avatarLetter}
+                                    </div>
+                                )}
+                            </button>
+                        </div>
                     </div>
                     <div className="flex-1 overflow-y-auto">
                         <GroupList />

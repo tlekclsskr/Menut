@@ -154,7 +154,7 @@ export default function CalendarView({ groupId }) {
                         <button
                             type="button"
                             onClick={fetchAll}
-                            className="w-10 h-10 bg-white/70 border border-card-border rounded-xl flex items-center justify-center text-text-muted hover:text-primary hover:bg-available-me transition-colors"
+                            className="w-10 h-10 bg-white/70 dark:bg-white/10 border border-card-border rounded-xl flex items-center justify-center text-text-muted hover:text-primary hover:bg-available-me transition-colors"
                             aria-label="รีโหลดปฏิทิน"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -165,7 +165,7 @@ export default function CalendarView({ groupId }) {
                         <button
                             type="button"
                             onClick={() => router.push(`/groups/${groupId}/settings`)}
-                            className="w-10 h-10 bg-white/70 border border-card-border rounded-xl flex items-center justify-center text-text-muted hover:text-primary hover:bg-available-me transition-colors"
+                            className="w-10 h-10 bg-white/70 dark:bg-white/10 border border-card-border rounded-xl flex items-center justify-center text-text-muted hover:text-primary hover:bg-available-me transition-colors"
                             aria-label="ตั้งค่ากลุ่ม"
                         >
                             ⚙️
@@ -190,13 +190,13 @@ export default function CalendarView({ groupId }) {
                 </button>
             </div>
 
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 border border-card-border max-w-full">
+            <div className="bg-white/70 dark:bg-white/5 backdrop-blur-sm rounded-3xl p-6 border border-card-border max-w-full">
 
                 <div className="flex items-center justify-between mb-4">
                     <button
                         type="button"
                         onClick={() => setCurrentMonth(new Date(year, month - 1))}
-                        className="w-10 h-10 bg-input-bg rounded-lg flex items-center justify-center text-primary hover:bg-available-me transition-colors"
+                        className="w-10 h-10 bg-input-bg dark:bg-[#2a2445] rounded-lg flex items-center justify-center text-primary hover:bg-available-me transition-colors"
                         aria-label="เดือนก่อนหน้า"
                     >
                         ‹
