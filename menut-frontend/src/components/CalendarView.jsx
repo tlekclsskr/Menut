@@ -223,6 +223,7 @@ export default function CalendarView({ groupId }) {
                         const dateStr = day ? `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}` : null
                         const isMarkedByMe = day && availability.some(a => a.date === dateStr && a.user.id == myUserId)
                         const isAllAvailable = day && availability.filter(a => a.date === dateStr).length === members.length
+                        const isSomeAvailable = day && !isMarkedByMe && availability.some(a => a.date === dateStr)
                         const isBusy = togglingDay === day
 
                         if (!day) {
@@ -233,7 +234,9 @@ export default function CalendarView({ groupId }) {
                             ? 'ทุกคนว่าง'
                             : isMarkedByMe
                                 ? 'ว่างของฉัน'
-                                : 'ยังไม่ได้มาร์ค'
+                                : isSomeAvailable
+                                    ? 'คนอื่นว่าง'
+                                    : 'ยังไม่ได้มาร์ค'
 
                         return (
                             <button
@@ -245,6 +248,7 @@ export default function CalendarView({ groupId }) {
                                 className={`min-h-11 py-2.5 rounded-xl text-base transition-colors focus-visible:ring-2 focus-visible:ring-primary/30
                                     ${isAllAvailable ? 'bg-available-all text-available-all-text font-medium' :
                                     isMarkedByMe ? 'bg-available-me text-available-me-text font-medium' :
+                                    isSomeAvailable ? 'bg-green-100 text-green-700 font-medium' :
                                     'hover:bg-input-bg text-text-dark'}
                                     ${isBusy ? 'opacity-60' : ''}
                                 `}
@@ -260,6 +264,10 @@ export default function CalendarView({ groupId }) {
                     <div className="flex items-center gap-1.5 text-sm text-text-muted">
                         <div className="w-3.5 h-3.5 rounded bg-available-me border border-primary-light" aria-hidden="true" />
                         ว่างของฉัน
+                    </div>
+                    <div className="flex items-center gap-1.5 text-sm text-text-muted">
+                        <div className="w-3.5 h-3.5 rounded bg-green-100 border border-green-200" aria-hidden="true" />
+                        คนอื่นว่าง
                     </div>
                     <div className="flex items-center gap-1.5 text-sm text-text-muted">
                         <div className="w-3.5 h-3.5 rounded bg-available-all border border-primary-light" aria-hidden="true" />
