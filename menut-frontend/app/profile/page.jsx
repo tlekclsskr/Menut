@@ -69,7 +69,7 @@ export default function ProfilePage() {
 
     return (
         <div className="min-h-screen bg-shell flex items-center justify-center p-4">
-            <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-card-border">
+            <div className="w-full max-w-md bg-white dark:bg-[#2a2445] rounded-3xl p-8 border border-card-border">
                 <button
                     type="button"
                     onClick={() => router.back()}
