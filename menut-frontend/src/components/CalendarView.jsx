@@ -108,7 +108,7 @@ export default function CalendarView({ groupId }) {
                     role="presentation"
                 >
                     <div
-                        className="bg-white rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
+                        className="bg-white dark:bg-[#2a2445] rounded-3xl p-6 w-full max-w-sm mx-4 border border-card-border"
                         onClick={(e) => e.stopPropagation()}
                         role="dialog"
                         aria-modal="true"
