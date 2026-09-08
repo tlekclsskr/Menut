@@ -3,6 +3,7 @@ require('dotenv').config()
 const cors = require('cors')
 const express = require('express')
 const app = express()
+const prisma= require('./prisma/client')
 
 const authMiddleware = require('./middleware/auth')
 
@@ -14,7 +15,7 @@ app.use(cors({
 }))
 app.use(express.json())
 
-app.get('/health', async (req, res) => {
+app.get('/', async (req, res) => {
     await prisma.$queryRaw`SELECT 1`
     res.status(200).json({ status: 'ok' })
 })
